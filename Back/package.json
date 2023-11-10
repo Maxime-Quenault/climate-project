@@ -1,0 +1,23 @@
+{
+  "name": "infoclimate",
+  "version": "1.0.0",
+  "description": "projet pour recuperer les info d'info climat",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maxime-Quenault/climate-project.git"
+  },
+  "author": "Maxime",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Maxime-Quenault/climate-project/issues"
+  },
+  "homepage": "https://github.com/Maxime-Quenault/climate-project#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "kafkajs": "^2.2.4"
+  }
+}
