@@ -1,7 +1,10 @@
 from confluent_kafka import Consumer, KafkaError
 from pymongo import MongoClient
 import json
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 # Configuration du consommateur Kafka
 def read_ccloud_config(config_file):
@@ -20,19 +23,26 @@ consumer = Consumer(read_ccloud_config("client.properties"))
 # S'abonner au topic 'weather_topic'
 consumer.subscribe(["weather_topic"])
 
+
+
 # Se connecter à MongoDB
-client = MongoClient('localhost', 27017)
-db = client['eiah']
-collection = db['meteo']
+client = MongoClient(os.getenv('HOSTMONGODBURL'), 5500)
+db = client[os.getenv('DATA_BASE')]
+collection_departements = db[os.getenv('COLLECTION_DEPARTEMENTS')]
+collection_meteo = db[os.getenv('COLLECTION_METEO')]
+
+ind = True
 
 # Boucle de consommation des messages
-while True:
+while ind:
     msg = consumer.poll(1.0)
 
     if msg is None:
+        print("j'ai rien")
         continue
     if msg.error():
         if msg.error().code() == KafkaError._PARTITION_EOF:
+            print("j'ai une erreur")
             continue
         else:
             print(msg.error())
@@ -45,6 +55,8 @@ while True:
     #print(weather_data_str.decode('utf-8'))
 
     # Insérer les données dans la collection MongoDB
-    collection.insert_one(weather_data)
+    #collection_meteo.insert_one(weather_data)
 
     print("Données insérées dans MongoDB avec succès.")
+
+    ind = False

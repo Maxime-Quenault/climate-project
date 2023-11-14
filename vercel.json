@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "climate-project",
+    "builds": [
+        {
+            "src": "consumer.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/api/$1.py"
+        }
+    ]
+}
