@@ -32,6 +32,7 @@ collection_departements = db[os.getenv('COLLECTION_DEPARTEMENTS')]
 collection_meteo = db[os.getenv('COLLECTION_METEO')]
 
 ind = True
+cpt = 0
 
 # Boucle de consommation des messages
 while ind:
@@ -49,14 +50,13 @@ while ind:
             break
 
     # Récupérer les données du message Kafka
-    weather_data_str = msg.value()
-    weather_data = json.loads(weather_data_str)
+    departement_data_str = msg.value()
+    departement_data = json.loads(departement_data_str)
 
     #print(weather_data_str.decode('utf-8'))
 
-    # Insérer les données dans la collection MongoDB
-    #collection_meteo.insert_one(weather_data)
+    #Insérer les données dans la collection MongoDB
+    collection_departements.insert_one(departement_data)
+    cpt = cpt + 1
 
-    print("Données insérées dans MongoDB avec succès.")
-
-    ind = False
+    print(f"Données insérées dans MongoDB avec succès : {cpt}")

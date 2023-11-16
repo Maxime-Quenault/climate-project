@@ -4,7 +4,7 @@ import json
 import os
 from dotenv import load_dotenv
 import sys
-from ..model.stationModel import Station
+from model.stationModel import Station
 
 load_dotenv()
 
@@ -67,21 +67,26 @@ fin
 envoyer les resutltat dans le kafka 
 '''
 #api_url = build_url(listeStation?, token_acces, dateDebut?, dateFin?)
-response = requests.get("test")
+# response = requests.get("test")
+with open('list_departement.json') as mon_fichier:
+    data = json.load(mon_fichier)
 
 
 
 # Envoyer les Données dans Kafka
 if response.status_code == 200:
-    weather_data = response.json()
+    #weather_data = response.json()
 
-    # Convertir les données en chaîne JSON
+    #Convertir les données en chaîne JSON
     #TO DO : Convertir dans les bon objets
-    weather_data_str = json.dumps(weather_data)
+    print("test")
+    for departement in data: 
+        #weather_data_str = json.dumps(weather_data)
+        departement_data_str = json.dumps(departement)
 
-    producer.produce("weather_topic", key="data1", value=weather_data_str)
-    producer.flush()
+        producer.produce("weather_topic", key="data", value=departement_data_str)
+        producer.flush()
 
-    print("Données envoyées à Kafka avec succès.")
+        print(f"Données envoyées à Kafka avec succès : {departement['nom_departement']}")
 else:
     print("La requête à l'API météo a échoué. Code de statut :", response.status_code)

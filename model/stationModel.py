@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import List
 
 class Station(BaseModel):
-    code: str
-    nom: str
-    longitude: str
-    lattitude: str
+    code_station: str
+    nom_station: str
+    latitude: float
+    longitude: float

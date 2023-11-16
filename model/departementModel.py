@@ -5,6 +5,8 @@ from stationModel import Station
 
 
 class Departement(BaseModel):
-    numero: str
-    nom: str
+    departement: str
+    nom_departement: str
     list_stations: List[Station]
+    avg_latitude: float
+    avg_longitude: float
