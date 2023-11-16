@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 import sys
 from models.stationModel import Station
-from departementService import getAllDepartements
+from services.departementService import getAllDepartementsToJson
 from datetime import datetime, timedelta
 
 
@@ -60,7 +60,7 @@ def build_url(liste_stations, token, date_debut, date_fin):
 
     return url
 
-#######################################
+########---------- TRAITEMENT SPARK ----------
 '''
 pour tout les departement faire
     pour chaque semaine de l'annee faire
@@ -73,7 +73,7 @@ date_start = datetime(2008, 1, 1).date()
 date_end = datetime(2009, 1, 1).date()
 
 # Recupération de la liste des station pour un departement
-departements = getAllDepartements()
+departements = getAllDepartementsToJson()
 
 # Créer le lien de requete d'API pour chaque département pour chaque semaine
 for dep in departements:
