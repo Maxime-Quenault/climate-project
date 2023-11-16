@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from departementService import getAllDepartements
+from services.departementService import getAllDepartements
 
 departement_route = Blueprint('departement_routes', __name__)
 
