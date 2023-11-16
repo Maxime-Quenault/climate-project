@@ -24,5 +24,3 @@ def getAllDepartementsToObj():
         departement = Departement(**dep)
         print(type(departement))
     return departements
-
-getAllDepartementsToObj()

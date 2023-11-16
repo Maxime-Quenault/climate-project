@@ -1,6 +1,6 @@
-from departementService import getAllDepartements
+from services.departementService import getAllDepartementsToJson
 from datetime import datetime, timedelta
-from model.stationModel import Station
+from models.stationModel import Station
 import os
 from dotenv import load_dotenv
 import requests
@@ -34,7 +34,7 @@ def build_url(liste_stations, token, date_debut, date_fin):
     
     return url
 # Recupération de la liste des station pour un departement
-departements = getAllDepartements()
+departements = getAllDepartementsToJson()
 
 # Créer le lien de requete d'API pour chaque département pour chaque semaine
 for dep in departements:
