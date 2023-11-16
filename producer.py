@@ -5,6 +5,9 @@ import os
 from dotenv import load_dotenv
 import sys
 from model.stationModel import Station
+from departementService import getAllDepartements
+from datetime import datetime, timedelta
+
 
 load_dotenv()
 
@@ -41,52 +44,67 @@ def read_ccloud_config(config_file):
                 parameter, value = line.strip().split('=', 1)
                 conf[parameter] = value.strip()
     return conf
+
 # Création du producteur
 producer = Producer(read_ccloud_config("client.properties"))
 
-# Recupération de la liste des station pour un departement
-
-
 # Effectuer une requête à l'API météo
+
 #Construction de l'url
-def build_url(listeStation: Station, token, dateDebut, dateFin):
+def build_url(liste_stations, token, date_debut, date_fin):
     url = "https://www.infoclimat.fr/opendata/?method=get&format=json&"
-    for station in listeStation:
-        url = url + "stations[]=" + station.code + "&"
-    url = url + "start=" + dateDebut + "&" + "end=" + dateFin +"&"
+    for station in liste_stations:
+        url = url + "stations[]=" + station['code_station'] + "&"
+    url = url + "start=" + date_debut + "&" + "end=" + date_fin + "&"
     url = url + "token=" + token
     
     return url
-#TO DO : Recuperer les infos necessaire (nottament la liste des stations present dans chaque departement) => qu'il faut boucler sur les departements
+
+#######################################
 '''
 pour tout les departement faire
     pour chaque semaine de l'annee faire
         recuperer les data via la requete de l'api infoClimat
     fin
 fin
-envoyer les resutltat dans le kafka 
+envoyer les resultats dans le kafka 
 '''
-#api_url = build_url(listeStation?, token_acces, dateDebut?, dateFin?)
-# response = requests.get("test")
-with open('list_departement.json') as mon_fichier:
-    data = json.load(mon_fichier)
+date_start = datetime(2008, 1, 1).date()
+date_end = datetime(2009, 1, 1).date()
+
+# Recupération de la liste des station pour un departement
+departements = getAllDepartements()
+
+# Créer le lien de requete d'API pour chaque département pour chaque semaine
+for dep in departements:
+    stations = dep['stations']
+    current_date = date_start
+    while current_date < date_end:
+        current_dateWeekLater = current_date + timedelta(weeks=1)
+        date_start_up = current_date.strftime("%Y-%m-%d")
+        date_end_up = current_dateWeekLater.strftime("%Y-%m-%d")
+
+        api_url = build_url(stations, token_acces, date_start_up, date_end_up)
+        response = requests.get(api_url)
+
+        # Envoyer les Données dans Kafka
+        if response.status_code == 200:
+            weather_data = response.json()
+
+            #Convertir les données en chaîne JSON
+            weather_data_str = "EN COURS"
+
+            # Envoyer les données à Kafka
+            producer.produce("weather_topic", key="data", value=weather_data_str)
+            
+            # Attendre que les messages soient envoyés et confirmés
+            producer.flush()
+            print("Données envoyées à Kafka avec succès pour le "+date_start_up+" au "+date_end_up)
+        else:
+            print("La requête à l'API météo a échoué. Code de statut :", response.status_code)
+
+        current_date += timedelta(weeks=1)
 
 
 
-# Envoyer les Données dans Kafka
-if response.status_code == 200:
-    #weather_data = response.json()
 
-    #Convertir les données en chaîne JSON
-    #TO DO : Convertir dans les bon objets
-    print("test")
-    for departement in data: 
-        #weather_data_str = json.dumps(weather_data)
-        departement_data_str = json.dumps(departement)
-
-        producer.produce("weather_topic", key="data", value=departement_data_str)
-        producer.flush()
-
-        print(f"Données envoyées à Kafka avec succès : {departement['nom_departement']}")
-else:
-    print("La requête à l'API météo a échoué. Code de statut :", response.status_code)
