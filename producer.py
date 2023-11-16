@@ -4,14 +4,14 @@ import json
 import os
 from dotenv import load_dotenv
 import sys
-from model.stationModel import Station
+from models.stationModel import Station
 from departementService import getAllDepartements
 from datetime import datetime, timedelta
 
 
 load_dotenv()
 
-# Utilisez le service ipinfo.io pour obtenir les informations sur votre adresse IP, Ce qui permet de 
+# Utilisez le service ipinfo.io pour obtenir les informations sur votre adresse IP, Ce qui permet de
 # choisir le bon token d'acces
 response = requests.get("https://ipinfo.io")
 data = response.json()
@@ -26,7 +26,7 @@ switch = {
 
 token_acces = switch.get(adresse_ip, None)
 
-if token_acces is None: 
+if token_acces is None:
     print("Erreur : Aucun Token trouvé pour l'IP de votre machine.")
     sys.exit(1)
 
@@ -57,7 +57,7 @@ def build_url(liste_stations, token, date_debut, date_fin):
         url = url + "stations[]=" + station['code_station'] + "&"
     url = url + "start=" + date_debut + "&" + "end=" + date_fin + "&"
     url = url + "token=" + token
-    
+
     return url
 
 #######################################
@@ -67,7 +67,7 @@ pour tout les departement faire
         recuperer les data via la requete de l'api infoClimat
     fin
 fin
-envoyer les resultats dans le kafka 
+envoyer les resultats dans le kafka
 '''
 date_start = datetime(2008, 1, 1).date()
 date_end = datetime(2009, 1, 1).date()
@@ -96,7 +96,7 @@ for dep in departements:
 
             # Envoyer les données à Kafka
             producer.produce("weather_topic", key="data", value=weather_data_str)
-            
+
             # Attendre que les messages soient envoyés et confirmés
             producer.flush()
             print("Données envoyées à Kafka avec succès pour le "+date_start_up+" au "+date_end_up)
@@ -104,7 +104,3 @@ for dep in departements:
             print("La requête à l'API météo a échoué. Code de statut :", response.status_code)
 
         current_date += timedelta(weeks=1)
-
-
-
-

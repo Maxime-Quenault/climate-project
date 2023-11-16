@@ -1,9 +1,8 @@
-#from model.departementModel import Departement
-# from model.stationModel import Station
 from dotenv import load_dotenv
 from pymongo import MongoClient
 import os
 import certifi
+from models.departementModel import Departement
 
 load_dotenv()
 
@@ -13,6 +12,17 @@ def connectionDataBase():
     collection_departements = db[os.getenv('COLLECTION_DEPARTEMENTS')]
     return collection_departements
 
-def getAllDepartements():
+def getAllDepartementsToJson():
     departements = connectionDataBase().find()
+    #for dep in departements:
+        
     return departements
+
+def getAllDepartementsToObj():
+    departements = connectionDataBase().find()
+    for dep in departements:
+        departement = Departement(**dep)
+        print(type(departement))
+    return departements
+
+getAllDepartementsToObj()

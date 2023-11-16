@@ -1,8 +1,3 @@
-def build_url():
-    url = "test"
-    url = url+"testtesttets"
-    return url
+from services.departementService import getAllDepartementsToObj
 
-api_url = build_url()
-
-print(api_url)
+getAllDepartementsToObj()
