@@ -1,12 +1,12 @@
 from flask import Blueprint, jsonify
-from services.departementService import getAllDepartements
+from services.departementService import getAllDepartementsToJson
 
 departement_route = Blueprint('departement_routes', __name__)
 
 @departement_route.route('/getall', methods=['GET'])
 def get_departements():
     # Récupère tous les départements
-    departements = getAllDepartements()
+    departements = getAllDepartementsToJson()
 
     # Créer une liste de dictionnaires pour chaque département
     departements_list = []

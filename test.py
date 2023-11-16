@@ -1,0 +1,3 @@
+from services.departementService import getAllDepartementsToObj
+
+getAllDepartementsToObj()

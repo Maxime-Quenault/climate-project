@@ -4,7 +4,7 @@ import json
 import os
 from dotenv import load_dotenv
 import sys
-from model.stationModel import Station
+from models.stationModel import Station
 
 load_dotenv()
 
