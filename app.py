@@ -4,6 +4,8 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 from routes.departementRoute import departement_route
+from departementService import getAllDepartements
+import certifi
 
 
 load_dotenv()
@@ -13,7 +15,7 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.register_blueprint(departement_route, url_prefix='/departement')
 
 # Se connecter à MongoDB
-client = MongoClient(os.getenv('HOSTMONGODBURL'), 5500)
+client = MongoClient(os.getenv('HOSTMONGODBURL'),tlsCAFile=certifi.where())
 db = client[os.getenv('DATA_BASE')]
 collection_departements = db[os.getenv('COLLECTION_DEPARTEMENTS')]
 collection_meteo = db[os.getenv('COLLECTION_METEO')]
