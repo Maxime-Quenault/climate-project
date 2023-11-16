@@ -4,6 +4,7 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 from departementService import getAllDepartements
+import certifi
 
 load_dotenv()
 
@@ -11,7 +12,7 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Se connecter à MongoDB
-client = MongoClient(os.getenv('HOSTMONGODBURL'), 5500)
+client = MongoClient(os.getenv('HOSTMONGODBURL'),tlsCAFile=certifi.where())
 db = client[os.getenv('DATA_BASE')]
 collection_departements = db[os.getenv('COLLECTION_DEPARTEMENTS')]
 collection_meteo = db[os.getenv('COLLECTION_METEO')]
