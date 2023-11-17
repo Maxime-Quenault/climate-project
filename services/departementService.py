@@ -40,3 +40,29 @@ def getAllDepartementsToObj():
         departement_obj.insert(departement)
 
     return departement_obj
+
+def getDepartementByNumToJson(num_departement: str):
+   departement =  connectionDataBase().find_one({'num_departement': num_departement})
+
+   if departement:
+        dep_dict = {
+            '_id': str(departement['_id']),  # Convert ObjectId en string pour JSON
+            'num_departement': departement['num_departement'],
+            'nom_departement': departement['nom_departement'],
+            'stations': departement['stations'],
+            'avg_latitude': departement['avg_latitude'],
+            'avg_longitude': departement['avg_longitude']
+        }
+        return jsonify(dep_dict)
+   else:
+       return jsonify({'message': 'Departement not found'}), 404
+   
+def getDepartementByNumToObj(num_departement: str):
+
+    departement = connectionDataBase().find_one({'num_departement': num_departement})
+
+    if departement:
+        
+        return Departement(**departement)
+    else:
+        return None

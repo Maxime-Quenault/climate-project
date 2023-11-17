@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 from typing import List
 from datetime import date
-from departementModel import Departement
-from infometeoModel import InfoMeteo
+from models.departementModel import Departement
+from models.infometeoModel import InfoMeteo
 
 class Meteo(BaseModel):
     departement: Departement
