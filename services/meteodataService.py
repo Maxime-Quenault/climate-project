@@ -4,6 +4,7 @@ import os
 import certifi
 from flask import jsonify
 from models.meteoModel import Meteo
+from datetime import datetime
 
 load_dotenv()
 
@@ -39,3 +40,95 @@ def getAllMeteodataToObj():
         meteodata_obj.insert(meteodata)
 
     return meteodata_obj
+
+def getMeteodataByDepartementToJson(num_departement: str):
+
+    meteodata =  connectionDataBase().find({'departement.num_departement': num_departement})
+    meteodata_list = []
+
+    for meteo in meteodata:
+        meteodata_dict = {
+            '_id': str(meteo['_id']),
+            'departement': meteo['departement'],
+            'date': meteo['date'],
+            'matin': meteo['matin'],
+            'apremidi': meteo['apremidi']
+        }
+        meteodata_list.append(meteodata_dict)
+
+    return jsonify(meteodata_list)
+    
+def getMeteodataByDepartementToObj(num_departement: str):
+
+    meteodatas = connectionDataBase().find({'departement.num_departement': num_departement})
+    meteodata_obj = []
+
+    for meteo in meteodatas:
+
+        meteodata = Meteo(**meteo)
+        meteodata_obj.insert(meteodata)
+
+    return meteodata_obj
+
+def getMeteodataByDepartementAndDateToJson(num_departement: str, date):
+    meteo =  connectionDataBase().find_one({'departement.num_departement': num_departement, 'date': date})
+
+    if meteo:
+        meteodata_dict = {
+            '_id': str(meteo['_id']),
+            'departement': meteo['departement'],
+            'date': meteo['date'],
+            'matin': meteo['matin'],
+            'apremidi': meteo['apremidi']
+        }
+        return jsonify(meteodata_dict)
+    else:
+       return jsonify({'message': 'Meteodata not found'}), 404
+    
+def getMeteodataByDepartementAndDateToObj(num_departement: str, date):
+
+    meteo = connectionDataBase().find_one({'departement.num_departement': num_departement, 'date': date})
+
+    if meteo:
+
+        meteodata = Meteo(**meteo)
+        return meteodata
+    
+    else:
+        return None
+    
+def getMeteodataByDepartementAndDatedebutDatefinToJson(num_departement: str, datedebut, datefin):
+    collection_meteo = connectionDataBase()
+    query = {
+        'departement.num_departement': num_departement, 
+        'date': {
+            '$gte': datedebut,
+            '$lte': datefin
+        }
+    }
+    meteo_data_cursor = collection_meteo.find(query)
+
+    meteo_data_list = []
+    for document in meteo_data_cursor:
+        meteo_data_list.append(document)
+
+    return meteo_data_list
+
+def getMeteodataByDepartementAndDatedebutDatefinToObj(num_departement: str, datedebut, datefin):
+    collection_meteo = connectionDataBase()
+    query = {
+        'departement.num_departement': num_departement, 
+        'date': {
+            '$gte': datedebut,
+            '$lte': datefin
+        }
+    }
+    meteo_data_cursor = collection_meteo.find(query)
+
+    meteo_data_list = []
+    for meteo in meteo_data_cursor:
+
+        meteodata = Meteo(**meteo)
+        meteo_data_list.insert(meteodata)
+
+    return meteo_data_list
