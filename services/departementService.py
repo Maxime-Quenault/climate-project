@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 import os
 import certifi
+from flask import jsonify
 from models.departementModel import Departement
 
 load_dotenv()
@@ -14,13 +15,28 @@ def connectionDataBase():
 
 def getAllDepartementsToJson():
     departements = connectionDataBase().find()
-    #for dep in departements:
-        
-    return departements
+    departements_list = []
+    for dep in departements:
+        dep_dict = {
+            '_id': str(dep['_id']),  # Convertit ObjectId en string pour JSON
+            'num_departement': dep['num_departement'],
+            'nom_departement': dep['nom_departement'],
+            'stations': dep['stations'],
+            'avg_latitude': dep['avg_latitude'],
+            'avg_longitude': dep['avg_longitude']
+        }
+        departements_list.append(dep_dict)
+
+    return jsonify(departements_list)
 
 def getAllDepartementsToObj():
+
     departements = connectionDataBase().find()
+    departement_obj = []
+
     for dep in departements:
+
         departement = Departement(**dep)
-        print(type(departement))
-    return departements
+        departement_obj.insert(departement)
+
+    return departement_obj
