@@ -3,10 +3,12 @@ from typing import List
 from datetime import date
 
 class InfoMeteo(BaseModel):
-    temperature: int
-    pression: int
-    humidite: int
-    vent_moyen: int
-    vent_rafales: int
-    vent_direction: int
-    nebulosite: int
+    temperature: float
+    pression: float
+    humidite: float
+    point_de_rose : float
+    vent_moyen: float
+    vent_rafales: float
+    vent_direction: float
+    pluie_1h : float
+    pluie_3h : float
