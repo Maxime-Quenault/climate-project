@@ -71,7 +71,7 @@ def getMeteodataByDepartementToObj(num_departement: str):
     return meteodata_obj
 
 def getMeteodataByDepartementAndDateToJson(num_departement: str, date):
-    meteo =  connectionDataBase().find_one({'departement.num_departement': num_departement, 'date': date})
+    meteo =  connectionDataBase().find_one({'departement': num_departement, 'date': date})
 
     if meteo:
         meteodata_dict = {
