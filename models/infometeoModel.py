@@ -4,6 +4,7 @@ from datetime import date
 
 class InfoMeteo(BaseModel):
     temperature: float
+    nebulosite: float
     pression: float
     humidite: float
     point_de_rose : float
@@ -12,3 +13,4 @@ class InfoMeteo(BaseModel):
     vent_direction: float
     pluie_1h : float
     pluie_3h : float
+    neige_au_sol: float
