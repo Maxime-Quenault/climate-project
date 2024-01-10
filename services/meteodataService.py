@@ -18,13 +18,16 @@ def getAllMeteodataToJson():
     meteodata = connectionDataBase().find()
     meteodata_list = []
     for meteo in meteodata:
-        meteodata_dict = {
-            '_id': str(meteo['_id']),
-            'departement': meteo['departement'],
-            'date': meteo['date'],
-            'matin': meteo['matin'],
-            'apremidi': meteo['apremidi']
-        }
+        try:
+            meteodata_dict = {
+                '_id': str(meteo['_id']),
+                'departement': meteo['departement'],
+                'date': meteo['date'],
+                'matin': meteo['matin'],
+                'apremidi': meteo['apremidi']
+            }
+        except KeyError:
+            print("l'ID "+str(meteo['_id'])+" pose probleme")
         meteodata_list.append(meteodata_dict)
 
     return jsonify(meteodata_list)
@@ -43,7 +46,7 @@ def getAllMeteodataToObj():
 
 def getMeteodataByDepartementToJson(num_departement: str):
 
-    meteodata =  connectionDataBase().find({'departement.num_departement': num_departement})
+    meteodata =  connectionDataBase().find({'departement': num_departement})
     meteodata_list = []
 
     for meteo in meteodata:
@@ -60,7 +63,7 @@ def getMeteodataByDepartementToJson(num_departement: str):
     
 def getMeteodataByDepartementToObj(num_departement: str):
 
-    meteodatas = connectionDataBase().find({'departement.num_departement': num_departement})
+    meteodatas = connectionDataBase().find({'departement': num_departement})
     meteodata_obj = []
 
     for meteo in meteodatas:
@@ -71,7 +74,7 @@ def getMeteodataByDepartementToObj(num_departement: str):
     return meteodata_obj
 
 def getMeteodataByDepartementAndDateToJson(num_departement: str, date):
-    meteo =  connectionDataBase().find_one({'departement.num_departement': num_departement, 'date': date})
+    meteo =  connectionDataBase().find_one({'departement': num_departement, 'date': date})
 
     if meteo:
         meteodata_dict = {
@@ -87,7 +90,7 @@ def getMeteodataByDepartementAndDateToJson(num_departement: str, date):
     
 def getMeteodataByDepartementAndDateToObj(num_departement: str, date):
 
-    meteo = connectionDataBase().find_one({'departement.num_departement': num_departement, 'date': date})
+    meteo = connectionDataBase().find_one({'departement': num_departement, 'date': date})
 
     if meteo:
 
@@ -100,7 +103,7 @@ def getMeteodataByDepartementAndDateToObj(num_departement: str, date):
 def getMeteodataByDepartementAndDatedebutDatefinToJson(num_departement: str, datedebut, datefin):
     collection_meteo = connectionDataBase()
     query = {
-        'departement.num_departement': num_departement, 
+        'departement': num_departement, 
         'date': {
             '$gte': datedebut,
             '$lte': datefin
@@ -108,16 +111,23 @@ def getMeteodataByDepartementAndDatedebutDatefinToJson(num_departement: str, dat
     }
     meteo_data_cursor = collection_meteo.find(query)
 
-    meteo_data_list = []
-    for document in meteo_data_cursor:
-        meteo_data_list.append(document)
+    meteodata_list = []
+    for meteo in meteo_data_cursor:
+        meteodata_dict = {
+            '_id': str(meteo['_id']),
+            'departement': meteo['departement'],
+            'date': meteo['date'],
+            'matin': meteo['matin'],
+            'apremidi': meteo['apremidi']
+        }
+        meteodata_list.append(meteodata_dict)
 
-    return meteo_data_list
+    return jsonify(meteodata_list)
 
 def getMeteodataByDepartementAndDatedebutDatefinToObj(num_departement: str, datedebut, datefin):
     collection_meteo = connectionDataBase()
     query = {
-        'departement.num_departement': num_departement, 
+        'departement': num_departement, 
         'date': {
             '$gte': datedebut,
             '$lte': datefin
