@@ -1,10 +1,8 @@
+import certifi
 from confluent_kafka import Consumer, KafkaError
 from pymongo import MongoClient
 import json
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
 
 # Configuration du consommateur Kafka
 def read_ccloud_config(config_file):
@@ -23,40 +21,36 @@ consumer = Consumer(read_ccloud_config("client.properties"))
 # S'abonner au topic 'weather_topic'
 consumer.subscribe(["weather_topic"])
 
-
-
 # Se connecter à MongoDB
-client = MongoClient(os.getenv('HOSTMONGODBURL'), 5500)
-db = client[os.getenv('DATA_BASE')]
-collection_departements = db[os.getenv('COLLECTION_DEPARTEMENTS')]
-collection_meteo = db[os.getenv('COLLECTION_METEO')]
-
-ind = True
-cpt = 0
+try:
+    client = MongoClient('mongodb+srv://maximeq72:iw0G1vU7vlgRaBnM@cashflow.rlqlhky.mongodb.net/cashflowDB', tlsCAFile=certifi.where())
+    db = client['ClimateDatas']
+    collection = db['data']
+except Exception as e:
+    print(f"Erreur lors de la connexion à MongoDB : {e}")
 
 # Boucle de consommation des messages
-while ind:
+cpt = 0
+while True:
     msg = consumer.poll(1.0)
 
     if msg is None:
-        print("j'ai rien")
         continue
     if msg.error():
         if msg.error().code() == KafkaError._PARTITION_EOF:
-            print("j'ai une erreur")
             continue
         else:
             print(msg.error())
             break
 
     # Récupérer les données du message Kafka
-    departement_data_str = msg.value()
-    departement_data = json.loads(departement_data_str)
+    weather_data_str = msg.value()
+    weather_data = json.loads(weather_data_str)
 
     #print(weather_data_str.decode('utf-8'))
 
-    #Insérer les données dans la collection MongoDB
-    collection_departements.insert_one(departement_data)
-    cpt = cpt + 1
+    # Insérer les données dans la collection MongoDB (probleme de TIMEOUT avec mongo dmd à max)
+    collection.insert_one(weather_data)
 
+    cpt = cpt + 1
     print(f"Données insérées dans MongoDB avec succès : {cpt}")

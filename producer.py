@@ -74,19 +74,19 @@ pour tout les departement faire
 fin
 envoyer les resultats dans le kafka
 '''
-date_start = datetime(2008, 1, 1).date()
-date_end = datetime(2009, 1, 1).date()
+date_start = datetime(2020, 4, 28).date()
+date_end = datetime(2021, 1, 1).date()
 
 # Recupération de la liste des station pour un departement
 departements = connectionDataBase().find()
 
 # Créer le lien de requete d'API pour chaque département pour chaque semaine
-for dep in departements[60:]:
+for dep in departements[83:]:
     stations = dep['stations']
     code_departement = dep['num_departement']
     current_date = date_start
     while current_date < date_end:
-        current_dateWeekLater = current_date + timedelta(weeks=1)
+        current_dateWeekLater = current_date + timedelta(weeks=1) - timedelta(days=1)
         date_start_up = current_date.strftime("%Y-%m-%d")
         date_end_up = current_dateWeekLater.strftime("%Y-%m-%d")
 
@@ -101,7 +101,7 @@ for dep in departements[60:]:
             weather_data = response.json()
             path_name = "datas/weather_test.json"
 
-            max_retries = 5
+            max_retries = 10
             retry_delay = 1  # en secondes
 
             #Si il échoue il recommence
@@ -167,6 +167,11 @@ for dep in departements[60:]:
                     # Si elle n'existe pas, la créer avec des valeurs nulles
                     df_combined = df_combined.withColumn("visibilite", lit(None).cast(DoubleType()))
 
+                # Vérifie si la colonne "visibilite" existe
+                if "pluie_3h" not in df_combined.columns:
+                    # Si elle n'existe pas, la créer avec des valeurs nulles
+                    df_combined = df_combined.withColumn("pluie_3h", lit(None).cast(DoubleType()))
+
                 for df in dfs[1:]:
                     # Vérifie si la colonne "nebulosite" existe
                     if "nebulosite" not in df.columns:
@@ -187,6 +192,11 @@ for dep in departements[60:]:
                     if "visibilite" not in df.columns:
                         # Si elle n'existe pas, la créer avec des valeurs nulles
                         df = df.withColumn("visibilite", lit(None).cast(DoubleType()))
+
+                    # Vérifie si la colonne "visibilite" existe
+                    if "pluie_3h" not in df.columns:
+                        # Si elle n'existe pas, la créer avec des valeurs nulles
+                        df = df.withColumn("pluie_3h", lit(None).cast(DoubleType()))
                     
                     df_combined = df_combined.unionByName(df)
 
