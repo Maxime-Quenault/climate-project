@@ -40,7 +40,7 @@ def getAllMeteodataToObj():
     for meteo in meteodatas:
 
         meteodata = Meteo(**meteo)
-        meteodata_obj.insert(meteodata)
+        meteodata_obj.append(meteodata)
 
     return meteodata_obj
 
@@ -139,6 +139,6 @@ def getMeteodataByDepartementAndDatedebutDatefinToObj(num_departement: str, date
     for meteo in meteo_data_cursor:
 
         meteodata = Meteo(**meteo)
-        meteo_data_list.insert(meteodata)
+        meteo_data_list.append(meteodata)
 
     return meteo_data_list

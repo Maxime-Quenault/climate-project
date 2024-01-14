@@ -1,19 +1,18 @@
 import sys
 sys.path.append('D:/User/Documents/GitHub/climate-project')
+from services.meteodataService import getMeteodataByDepartementToObj, getMeteodataByDepartementAndDatedebutDatefinToObj
 
 import pandas as pd
 import numpy as np
+from datetime import date, timedelta
+import matplotlib.pyplot as plt
 
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
-import matplotlib.pyplot as plt
-
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-from services.meteodataService import getMeteodataByDepartementToObj
-
 
 def load_data(num_departement : str):
 
@@ -33,9 +32,9 @@ def preprocess_data(df):
 
     # On gère les valeurs manquantes et null
     df.dropna(inplace=True)
-    indexNamesTempMatin = df[df["matin.temperature"] == 0.0].index
+    indexNamesTempMatin = df[df["matin.temperature"] == 999].index
     df.drop(indexNamesTempMatin, inplace=True)
-    indexNamesTempApresMidi = df[df["apremidi.temperature"] == 0.0].index
+    indexNamesTempApresMidi = df[df["apremidi.temperature"] == 999].index
     df.drop(indexNamesTempApresMidi, inplace=True)
     
 
@@ -82,7 +81,30 @@ def trace_history(history):
     plt.legend()
     plt.show()
 
-#Values
+def get_prediction(model, sequence_length, num_departement):
+    # date_fin = date.today()
+    # date_debut = date_fin - timedelta(days=sequence_length)
+
+    # date_fin_str = date_fin.strftime("%Y-%m-%d")
+    # date_debut_str = date_debut.strftime("%Y-%m-%d")
+    date_fin_str = "2022-01-06"
+    date_debut_str = "2022-01-01"
+
+    data = getMeteodataByDepartementAndDatedebutDatefinToObj(num_departement, date_debut_str, date_fin_str)
+    data_dicts = [d.to_dict() for d in data]
+    df = pd.json_normalize(data_dicts)
+    df_scaled = preprocess_data(df)
+
+    scaler = MinMaxScaler()
+    new_prediction = model.predict(df_scaled)
+    predicted_temperature = scaler.inverse_transform(new_prediction)
+
+    print(f'temperature predis pour le {date_fin_str} matin : {predicted_temperature[0]}°C\ntemperature predis pour le {date_fin_str} après-midi : {predicted_temperature[1]}°C')
+
+    return predicted_temperature
+
+
+# #Values
 sequence_length = 5
 num_departement = "72"
 
@@ -99,3 +121,10 @@ model, history = train(X_train, y_train, X_test, y_test, sequence_length)
 test_loss = model.evaluate(X_test, y_test)
 print(f"Test Loss: {test_loss}")
 trace_history(history)
+
+#Utilisation
+prediction = get_prediction(model, sequence_length, num_departement)
+
+
+
+

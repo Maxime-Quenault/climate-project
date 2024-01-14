@@ -3,7 +3,7 @@ from typing import List
 from datetime import date
 
 class InfoMeteo(BaseModel):
-    temperature: float = Field(default=0.0)
+    temperature: float = Field(default=999)
     nebulosite: float = Field(default=0.0) 
     pression: float = Field(default=0.0)
     humidite: float = Field(default=0.0)
