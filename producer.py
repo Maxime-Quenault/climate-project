@@ -74,15 +74,15 @@ pour tout les departement faire
 fin
 envoyer les resultats dans le kafka
 '''
-date_start = datetime(2022, 1, 1).date()
+date_start = datetime(2022, 9, 23).date()
 date_end = datetime(2023, 1, 1).date()
 
 # Recupération de la liste des station pour un departement
 departements = connectionDataBase().find()
 
 # Créer le lien de requete d'API pour chaque département pour chaque semaine
-# dep 58 pas fait
-for dep in departements[58:]:
+# dep 67 pas fini
+for dep in departements[67:68]:
     stations = dep['stations']
     code_departement = dep['num_departement']
     current_date = date_start
