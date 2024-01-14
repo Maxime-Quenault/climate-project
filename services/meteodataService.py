@@ -69,7 +69,7 @@ def getMeteodataByDepartementToObj(num_departement: str):
     for meteo in meteodatas:
 
         meteodata = Meteo(**meteo)
-        meteodata_obj.insert(meteodata)
+        meteodata_obj.append(meteodata)
 
     return meteodata_obj
 

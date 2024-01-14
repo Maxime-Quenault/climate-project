@@ -74,14 +74,15 @@ pour tout les departement faire
 fin
 envoyer les resultats dans le kafka
 '''
-date_start = datetime(2020, 4, 28).date()
-date_end = datetime(2021, 1, 1).date()
+date_start = datetime(2022, 1, 1).date()
+date_end = datetime(2023, 1, 1).date()
 
 # Recupération de la liste des station pour un departement
 departements = connectionDataBase().find()
 
 # Créer le lien de requete d'API pour chaque département pour chaque semaine
-for dep in departements[83:]:
+# dep 58 pas fait
+for dep in departements[58:]:
     stations = dep['stations']
     code_departement = dep['num_departement']
     current_date = date_start
@@ -171,6 +172,8 @@ for dep in departements[83:]:
                 if "pluie_3h" not in df_combined.columns:
                     # Si elle n'existe pas, la créer avec des valeurs nulles
                     df_combined = df_combined.withColumn("pluie_3h", lit(None).cast(DoubleType()))
+
+                    
 
                 for df in dfs[1:]:
                     # Vérifie si la colonne "nebulosite" existe
