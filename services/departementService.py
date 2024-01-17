@@ -7,7 +7,7 @@ from models.departementModel import Departement
 
 load_dotenv()
 
-def connectionDataBase():
+def connectionDataBaseDep():
     client = MongoClient(os.getenv('HOSTMONGODBURL'), tlsCAFile=certifi.where())
     db = client[os.getenv('DATA_BASE')]
     collection_departements = db[os.getenv('COLLECTION_DEPARTEMENTS')]
@@ -31,18 +31,18 @@ def getAllDepartementsToJson():
 
 def getAllDepartementsToObj():
 
-    departements = connectionDataBase().find()
+    departements = connectionDataBaseDep().find()
     departement_obj = []
 
     for dep in departements:
 
         departement = Departement(**dep)
-        departement_obj.insert(departement)
+        departement_obj.append(departement)
 
     return departement_obj
 
 def getDepartementByNumToJson(num_departement: str):
-   departement =  connectionDataBase().find_one({'num_departement': num_departement})
+   departement =  connectionDataBaseDep().find_one({'num_departement': num_departement})
 
    if departement:
         dep_dict = {
@@ -59,7 +59,7 @@ def getDepartementByNumToJson(num_departement: str):
    
 def getDepartementByNumToObj(num_departement: str):
 
-    departement = connectionDataBase().find_one({'num_departement': num_departement})
+    departement = connectionDataBaseDep().find_one({'num_departement': num_departement})
 
     if departement:
         

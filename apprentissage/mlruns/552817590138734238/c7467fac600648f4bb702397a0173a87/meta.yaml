@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/User/Documents/GitHub/climate-project/apprentissage/mlruns/552817590138734238/c7467fac600648f4bb702397a0173a87/artifacts
+end_time: 1705532458202
+entry_point_name: ''
+experiment_id: '552817590138734238'
+lifecycle_stage: active
+run_id: c7467fac600648f4bb702397a0173a87
+run_name: skittish-vole-86
+run_uuid: c7467fac600648f4bb702397a0173a87
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1705532312075
+status: 3
+tags: []
+user_id: Maxime

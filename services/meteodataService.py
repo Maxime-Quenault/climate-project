@@ -1,10 +1,14 @@
+import sys
+sys.path.append('D:/User/Documents/GitHub/climate-project')
 from dotenv import load_dotenv
 from pymongo import MongoClient
 import os
 import certifi
 from flask import jsonify
 from models.meteoModel import Meteo
-from datetime import datetime
+import pandas as pd
+from services.departementService import connectionDataBaseDep, getAllDepartementsToObj
+from tqdm import tqdm
 
 load_dotenv()
 
@@ -142,3 +146,26 @@ def getMeteodataByDepartementAndDatedebutDatefinToObj(num_departement: str, date
         meteo_data_list.append(meteodata)
 
     return meteo_data_list
+
+def cleanDataBase():
+    nb_doublons = 0
+    departements = getAllDepartementsToObj()
+    connectionDataBaseMeteo = connectionDataBase()
+    unique_data = set()
+
+    # dep de 01 à 78 fini !
+    for dep in tqdm(departements):
+        num_dep = dep.num_departement
+        datas = getMeteodataByDepartementToObj(num_dep)
+
+        for data in datas:
+            data_key = (data.date, data.departement)
+            if data_key in unique_data:
+                connectionDataBaseMeteo.delete_one({'date': data.date, 'departement': data.departement})
+                nb_doublons += 1
+            else:
+                unique_data.add(data_key)
+
+    return nb_doublons
+
+# print(f'{cleanDataBase()} données supprimées')

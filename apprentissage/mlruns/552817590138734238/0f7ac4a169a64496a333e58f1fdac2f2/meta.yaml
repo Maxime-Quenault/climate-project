@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/User/Documents/GitHub/climate-project/apprentissage/mlruns/552817590138734238/0f7ac4a169a64496a333e58f1fdac2f2/artifacts
+end_time: 1705531905205
+entry_point_name: ''
+experiment_id: '552817590138734238'
+lifecycle_stage: active
+run_id: 0f7ac4a169a64496a333e58f1fdac2f2
+run_name: industrious-colt-413
+run_uuid: 0f7ac4a169a64496a333e58f1fdac2f2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1705531790623
+status: 4
+tags: []
+user_id: Maxime
