@@ -3,6 +3,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from routes.departementRoute import departement_route
 from routes.meteodataRoute import meteodata_route
+from routes.predictionRoute import prediction_route
 
 
 load_dotenv()
@@ -11,6 +12,8 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.register_blueprint(departement_route, url_prefix='/departement')
 app.register_blueprint(meteodata_route, url_prefix='/meteodata')
+app.register_blueprint(prediction_route, url_prefix='/prediction')
+
 
 @app.route('/ping', methods=['GET'])
 def test_connection():

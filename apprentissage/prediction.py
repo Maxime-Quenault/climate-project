@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import mlflow
 
 
-def get_prediction(id_model, num_departement, date_prediction):
+def getPrediction(id_model, num_departement, date_prediction):
 
     model = mlflow.tensorflow.load_model(f"runs:/{id_model}/model")
     param_apprentissage = get_param_apprentissage()
@@ -28,13 +28,14 @@ def get_prediction(id_model, num_departement, date_prediction):
     data_dicts = [d.to_dict() for d in data]
     df = pd.json_normalize(data_dicts)
     df_scaled = preprocess_data(df)
-    df_scaled = np.reshape(df_scaled, (1, sequence_length, 2))
+    df_scaled = np.reshape(df_scaled, (1, sequence_length, 3))
 
     new_prediction = model.predict(df_scaled)
     predicted_temperature = scaler.inverse_transform(new_prediction)
+    print(predicted_temperature)
     print(f'temperature predis pour le {date_fin_str} matin : {predicted_temperature[0][0]}°C\ntemperature predis pour le {date_fin_str} après-midi : {predicted_temperature[0][1]}°C')
 
     return predicted_temperature[0]
 
-get_prediction("2642afa4fc584d26838f47051ab7f1ed", "72", "2024-05-03")
+getPrediction("0000a10bcd38420b81efc24604dc7e99", "72", "2024-05-03")
 
