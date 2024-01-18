@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/User/Documents/GitHub/climate-project/apprentissage/mlruns/526701893689033488/2642afa4fc584d26838f47051ab7f1ed/artifacts
+end_time: 1705567602354
+entry_point_name: ''
+experiment_id: '526701893689033488'
+lifecycle_stage: active
+run_id: 2642afa4fc584d26838f47051ab7f1ed
+run_name: bedecked-owl-761
+run_uuid: 2642afa4fc584d26838f47051ab7f1ed
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1705567570723
+status: 3
+tags: []
+user_id: Maxime
