@@ -130,11 +130,11 @@ epochs = 10
 batch_size = 64
 scaler = MinMaxScaler()
 
-# #Récupération des données et réalisation de traitements
-# df = load_data(num_departement)
-# df_scaled = preprocess_data(df)
-# X, y = create_sequences_to_LSTM(df_scaled, sequence_length)
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+#Récupération des données et réalisation de traitements
+df = load_data(num_departement)
+df_scaled = preprocess_data(df)
+X, y = create_sequences_to_LSTM(df_scaled, sequence_length)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # model, history = train(X_train, y_train, X_test, y_test, sequence_length, epochs, batch_size)
 
