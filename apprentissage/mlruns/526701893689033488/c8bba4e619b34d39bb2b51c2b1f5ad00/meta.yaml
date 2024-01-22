@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/User/Documents/GitHub/climate-project/apprentissage/mlruns/526701893689033488/c8bba4e619b34d39bb2b51c2b1f5ad00/artifacts
+end_time: 1705966343549
+entry_point_name: ''
+experiment_id: '526701893689033488'
+lifecycle_stage: active
+run_id: c8bba4e619b34d39bb2b51c2b1f5ad00
+run_name: serious-bird-425
+run_uuid: c8bba4e619b34d39bb2b51c2b1f5ad00
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1705966274839
+status: 3
+tags: []
+user_id: Maxime

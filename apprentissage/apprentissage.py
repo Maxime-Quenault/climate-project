@@ -1,6 +1,7 @@
 import sys
 sys.path.append('D:/User/Documents/GitHub/climate-project')
 from services.meteodataService import getMeteodataByDepartementToObj, getMeteodataByDepartementAndDatedebutDatefinToObj
+from services.departementService import getAllDepartementsToObj
 
 import pandas as pd
 import numpy as np
@@ -30,11 +31,17 @@ def get_param_apprentissage():
         "scaler" : scaler
     }
 
+def load_data():
 
-def load_data(num_departement : str):
+    all_departement = getAllDepartementsToObj()
+    dep_dicts = [d.to_dict() for d in all_departement]
+    all_data = []
 
-    data = getMeteodataByDepartementToObj(num_departement)
-    data_dicts = [d.to_dict() for d in data]
+    for dep in dep_dicts:
+        data = getMeteodataByDepartementToObj(dep['num_departement'])
+        data_dicts = [d.to_dict() for d in data]
+        all_data.extend(data_dicts)
+
     df = pd.json_normalize(data_dicts)
 
     return df
@@ -45,12 +52,30 @@ def preprocess_data(df):
     df = df.set_index('date')
 
     # Sélection des colonnes pertinentes
-    df = df[['departement', 'matin.temperature', 'apremidi.temperature']]
+    df = df[['departement', 
+             'matin.temperature', 
+             'matin.pression', 
+             'matin.humidite', 
+             'matin.vent_moyen',
+             'matin.vent_rafales',
+             'matin.vent_direction',
+             'matin.pluie_1h',
+             'matin.pluie_3h',
+             'apremidi.temperature',
+             'apremidi.pression', 
+             'apremidi.humidite', 
+             'apremidi.vent_moyen',
+             'apremidi.vent_rafales',
+             'apremidi.vent_direction',
+             'apremidi.pluie_1h',
+             'apremidi.pluie_3h']]
 
     # On gère les valeurs manquantes et null
     df = df.dropna()
+    
     indexNamesTempMatin = df[df["matin.temperature"] == 999].index
     df = df.drop(indexNamesTempMatin)
+
     indexNamesTempApresMidi = df[df["apremidi.temperature"] == 999].index
     df = df.drop(indexNamesTempApresMidi)
     
@@ -83,8 +108,8 @@ def train(X_train, y_train, X_test, y_test, sequence_length, epochs=3, batch_siz
 
         # Définition et compilation du modèle
         model = Sequential()
-        model.add(LSTM(50, activation='relu', input_shape=(sequence_length, 3)))
-        model.add(Dense(3))
+        model.add(LSTM(50, activation='relu', input_shape=(sequence_length, 17)))
+        model.add(Dense(17))
         model.compile(optimizer='adam', loss='mean_squared_error')
 
         # Entraîner le modèle
@@ -124,17 +149,16 @@ mlflow.set_experiment("Temperature_Prediction")
 mlflow.set_tracking_uri(uri="http://127.0.0.1:5000")
 
 #Values
-sequence_length = 10
-num_departement = "72"
-epochs = 10
-batch_size = 64
+sequence_length = 365
+epochs = 5
+batch_size = 256
 scaler = MinMaxScaler()
 
 #Récupération des données et réalisation de traitements
-df = load_data(num_departement)
-df_scaled = preprocess_data(df)
-X, y = create_sequences_to_LSTM(df_scaled, sequence_length)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# df = load_data()
+# df_scaled = preprocess_data(df)
+# X, y = create_sequences_to_LSTM(df_scaled, sequence_length)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # model, history = train(X_train, y_train, X_test, y_test, sequence_length, epochs, batch_size)
 

@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/User/Documents/GitHub/climate-project/apprentissage/mlruns/526701893689033488/3afd227af03248ed9ce8c56c79132456/artifacts
+end_time: 1705960557403
+entry_point_name: ''
+experiment_id: '526701893689033488'
+lifecycle_stage: active
+run_id: 3afd227af03248ed9ce8c56c79132456
+run_name: bouncy-yak-247
+run_uuid: 3afd227af03248ed9ce8c56c79132456
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1705960473465
+status: 3
+tags: []
+user_id: Maxime

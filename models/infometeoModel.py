@@ -6,7 +6,7 @@ class InfoMeteo(BaseModel):
     temperature: float = Field(default=999)
     nebulosite: float = Field(default=0.0) 
     pression: float = Field(default=0.0)
-    humidite: float = Field(default=0.0)
+    humidite: float = Field(default=999)
     point_de_rose : float = Field(default=0.0)
     vent_moyen: float = Field(default=0.0)
     vent_rafales: float = Field(default=0.0)

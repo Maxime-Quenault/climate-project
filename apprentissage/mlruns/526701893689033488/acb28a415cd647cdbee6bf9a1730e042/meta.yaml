@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/User/Documents/GitHub/climate-project/apprentissage/mlruns/526701893689033488/acb28a415cd647cdbee6bf9a1730e042/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '526701893689033488'
+lifecycle_stage: active
+run_id: acb28a415cd647cdbee6bf9a1730e042
+run_name: melodic-newt-104
+run_uuid: acb28a415cd647cdbee6bf9a1730e042
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1705960643207
+status: 1
+tags: []
+user_id: Maxime
