@@ -1,7 +1,7 @@
 import sys
 sys.path.append('D:/User/Documents/GitHub/climate-project')
 from services.meteodataService import getMeteodataByDepartementAndDatedebutDatefinToObj
-from apprentissage import preprocess_data, get_param_apprentissage
+from apprentissage.apprentissage import preprocess_data, get_param_apprentissage
 
 import pandas as pd
 import numpy as np
@@ -53,23 +53,24 @@ def getPrediction(id_model, num_departement, date_prediction_str, date_connue_pl
     prediction = predicted_temperature[0]
     prediction_res = {
         'departement' : prediction[0], 
-             'matin.temperature' : prediction[1], 
-             'matin.pression' : prediction[2], 
-             'matin.humidite' : prediction[3], 
-             'matin.vent_moyen' : prediction[4],
-             'matin.vent_rafales' : prediction[5],
-             'matin.vent_direction' : prediction[6],
-             'matin.pluie_1h' : prediction[7],
-             'matin.pluie_3h' : prediction[8],
-             'apremidi.temperature' : prediction[9],
-             'apremidi.pression' : prediction[10], 
-             'apremidi.humidite' : prediction[11], 
-             'apremidi.vent_moyen' : prediction[12],
-             'apremidi.vent_rafales' : prediction[13],
-             'apremidi.vent_direction' : prediction[14],
-             'apremidi.pluie_1h' : prediction[15],
-             'apremidi.pluie_3h' : prediction[16]
+        'matin.temperature' : prediction[1], 
+        'matin.pression' : prediction[2], 
+        'matin.humidite' : prediction[3], 
+        'matin.vent_moyen' : prediction[4],
+        'matin.vent_rafales' : prediction[5],
+        'matin.vent_direction' : prediction[6],
+        'matin.pluie_1h' : prediction[7],
+        'matin.pluie_3h' : prediction[8],
+        'apremidi.temperature' : prediction[9],
+        'apremidi.pression' : prediction[10], 
+        'apremidi.humidite' : prediction[11], 
+        'apremidi.vent_moyen' : prediction[12],
+        'apremidi.vent_rafales' : prediction[13],
+        'apremidi.vent_direction' : prediction[14],
+        'apremidi.pluie_1h' : prediction[15],
+        'apremidi.pluie_3h' : prediction[16]
     }
+    
     return prediction_res
 
-print(getPrediction("c8bba4e619b34d39bb2b51c2b1f5ad00", "58", "2024-01-24", "2024-01-14"))
+# print(getPrediction("c8bba4e619b34d39bb2b51c2b1f5ad00", "58", "2024-01-24", "2024-01-14"))

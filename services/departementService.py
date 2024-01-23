@@ -14,7 +14,7 @@ def connectionDataBaseDep():
     return collection_departements
 
 def getAllDepartementsToJson():
-    departements = connectionDataBase().find()
+    departements = connectionDataBaseDep().find()
     departements_list = []
     for dep in departements:
         dep_dict = {

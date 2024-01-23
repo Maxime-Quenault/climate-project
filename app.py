@@ -1,6 +1,7 @@
-from flask import Flask, jsonify, request
+from flask import Flask, json, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
+import numpy as np
 from routes.departementRoute import departement_route
 from routes.meteodataRoute import meteodata_route
 from routes.predictionRoute import prediction_route
@@ -14,6 +15,13 @@ app.register_blueprint(departement_route, url_prefix='/departement')
 app.register_blueprint(meteodata_route, url_prefix='/meteodata')
 app.register_blueprint(prediction_route, url_prefix='/prediction')
 
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.float32):
+            return float(obj)
+        return json.JSONEncoder.default(self, obj)
+
+app.json_encoder = CustomJSONEncoder
 
 @app.route('/ping', methods=['GET'])
 def test_connection():
@@ -21,6 +29,6 @@ def test_connection():
     return res
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
 
     
