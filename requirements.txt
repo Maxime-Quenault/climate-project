@@ -1,0 +1,12 @@
+Flask
+Flask-Cors
+python-dotenv
+pymongo
+pydantic
+numpy
+pandas
+tqdm
+matplotlib
+mlflow
+keras
+scikit-learn
