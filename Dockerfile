@@ -1,7 +1,5 @@
-FROM continuumio/miniconda3:latest
+FROM python
 WORKDIR /app
-COPY environment.yml .
 COPY . /app
-RUN conda env create -f environment.yml
-SHELL ["conda", "run", "-n", "nom_de_votre_env", "/bin/bash", "-c"]
+RUN pip install -r requirements.txt
 CMD [ "python3", "app.py" ]
