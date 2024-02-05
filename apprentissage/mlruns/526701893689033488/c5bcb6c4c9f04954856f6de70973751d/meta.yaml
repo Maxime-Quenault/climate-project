@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Bureau/Projet/climate-project/apprentissage/mlruns/526701893689033488/c5bcb6c4c9f04954856f6de70973751d/artifacts
+end_time: 1707076693430
+entry_point_name: ''
+experiment_id: '526701893689033488'
+lifecycle_stage: active
+run_id: c5bcb6c4c9f04954856f6de70973751d
+run_name: peaceful-pug-32
+run_uuid: c5bcb6c4c9f04954856f6de70973751d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707076646826
+status: 3
+tags: []
+user_id: ratou

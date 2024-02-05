@@ -1,5 +1,5 @@
 import sys
-sys.path.append('D:/User/Documents/GitHub/climate-project')
+sys.path.append('D:/Bureau/Projet/climate-project')
 from services.meteodataService import getMeteodataByDepartementToObj, getMeteodataByDepartementAndDatedebutDatefinToObj
 from services.departementService import getAllDepartementsToObj
 
